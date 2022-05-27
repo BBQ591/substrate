@@ -1,0 +1,160 @@
+{
+  "version": "18.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "substrate-stack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "substrate-stack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "substrate-stack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "substrate-stack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6328098bafd2e3c57abfac4246170398708a15049763e787442d4624c84224cc.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "substrate-stack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "substrate-stack.assets"
+      ],
+      "metadata": {
+        "/substrate-stack/substrate-stack/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestack0460413E"
+          }
+        ],
+        "/substrate-stack/substrate-stack/publicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackpublicSubnet1SubnetE97A5C5D"
+          }
+        ],
+        "/substrate-stack/substrate-stack/publicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackpublicSubnet1RouteTable8E40CCF7"
+          }
+        ],
+        "/substrate-stack/substrate-stack/publicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackpublicSubnet1RouteTableAssociationD198CA1E"
+          }
+        ],
+        "/substrate-stack/substrate-stack/publicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackpublicSubnet1DefaultRoute3CB450F2"
+          }
+        ],
+        "/substrate-stack/substrate-stack/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackIGWFE487FA3"
+          }
+        ],
+        "/substrate-stack/substrate-stack/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substratestackVPCGW276AFC6A"
+          }
+        ],
+        "/substrate-stack/substrate-efs-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateefssg69C36F35"
+          }
+        ],
+        "/substrate-stack/substrate-efs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateefsC60D5932"
+          }
+        ],
+        "/substrate-stack/substrate-efs/EfsMountTarget1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateefsEfsMountTarget167F52C05"
+          }
+        ],
+        "/substrate-stack/substrate-leader/InstanceSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateleaderInstanceSecurityGroup6D768391"
+          }
+        ],
+        "/substrate-stack/substrate-leader/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateleaderInstanceRole2FF0A2A6"
+          }
+        ],
+        "/substrate-stack/substrate-leader/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateleaderInstanceProfileA0E04862"
+          }
+        ],
+        "/substrate-stack/substrate-leader/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "substrateleader2516293E"
+          }
+        ],
+        "/substrate-stack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+          }
+        ],
+        "/substrate-stack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/substrate-stack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/substrate-stack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/substrate-stack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "substrate-stack"
+    }
+  }
+}

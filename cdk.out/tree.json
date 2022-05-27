@@ -1,0 +1,552 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.16"
+        }
+      },
+      "substrate-stack": {
+        "id": "substrate-stack",
+        "path": "substrate-stack",
+        "children": {
+          "substrate-stack": {
+            "id": "substrate-stack",
+            "path": "substrate-stack/substrate-stack",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "substrate-stack/substrate-stack/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                  "aws:cdk:cloudformation:props": {
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsHostnames": true,
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default",
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "substrate-stack/substrate-stack"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+                  "version": "2.24.1"
+                }
+              },
+              "publicSubnet1": {
+                "id": "publicSubnet1",
+                "path": "substrate-stack/substrate-stack/publicSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "substrate-stack/substrate-stack/publicSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "substratestack0460413E"
+                        },
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.0.0/16",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "substrate-stack/substrate-stack/publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.24.1"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "substrate-stack/substrate-stack/publicSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.24.1"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "substrate-stack/substrate-stack/publicSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "substratestack0460413E"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "substrate-stack/substrate-stack/publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.24.1"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "substrate-stack/substrate-stack/publicSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "substratestackpublicSubnet1RouteTable8E40CCF7"
+                        },
+                        "subnetId": {
+                          "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.24.1"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "substrate-stack/substrate-stack/publicSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "substratestackpublicSubnet1RouteTable8E40CCF7"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "substratestackIGWFE487FA3"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.24.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.24.1"
+                }
+              },
+              "IGW": {
+                "id": "IGW",
+                "path": "substrate-stack/substrate-stack/IGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "substrate-stack/substrate-stack"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
+                  "version": "2.24.1"
+                }
+              },
+              "VPCGW": {
+                "id": "VPCGW",
+                "path": "substrate-stack/substrate-stack/VPCGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                  "aws:cdk:cloudformation:props": {
+                    "vpcId": {
+                      "Ref": "substratestack0460413E"
+                    },
+                    "internetGatewayId": {
+                      "Ref": "substratestackIGWFE487FA3"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
+                  "version": "2.24.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Vpc",
+              "version": "2.24.1"
+            }
+          },
+          "substrate-efs-sg": {
+            "id": "substrate-efs-sg",
+            "path": "substrate-stack/substrate-efs-sg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "substrate-stack/substrate-efs-sg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "substrate-stack/substrate-efs-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 2049,
+                        "toPort": 2049,
+                        "description": "from 0.0.0.0/0:2049"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "substratestack0460413E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.24.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.24.1"
+            }
+          },
+          "substrate-efs": {
+            "id": "substrate-efs",
+            "path": "substrate-stack/substrate-efs",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "substrate-stack/substrate-efs/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EFS::FileSystem",
+                  "aws:cdk:cloudformation:props": {
+                    "encrypted": true,
+                    "fileSystemTags": [
+                      {
+                        "key": "Name",
+                        "value": "substrate-stack/substrate-efs"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_efs.CfnFileSystem",
+                  "version": "2.24.1"
+                }
+              },
+              "EfsMountTarget1": {
+                "id": "EfsMountTarget1",
+                "path": "substrate-stack/substrate-efs/EfsMountTarget1",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EFS::MountTarget",
+                  "aws:cdk:cloudformation:props": {
+                    "fileSystemId": {
+                      "Ref": "substrateefsC60D5932"
+                    },
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "substrateefssg69C36F35",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnetId": {
+                      "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_efs.CfnMountTarget",
+                  "version": "2.24.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_efs.FileSystem",
+              "version": "2.24.1"
+            }
+          },
+          "substrate-leader": {
+            "id": "substrate-leader",
+            "path": "substrate-stack/substrate-leader",
+            "children": {
+              "InstanceSecurityGroup": {
+                "id": "InstanceSecurityGroup",
+                "path": "substrate-stack/substrate-leader/InstanceSecurityGroup",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "substrate-stack/substrate-leader/InstanceSecurityGroup/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "groupDescription": "substrate-stack/substrate-leader/InstanceSecurityGroup",
+                        "securityGroupEgress": [
+                          {
+                            "cidrIp": "0.0.0.0/0",
+                            "description": "Allow all outbound traffic by default",
+                            "ipProtocol": "-1"
+                          }
+                        ],
+                        "securityGroupIngress": [
+                          {
+                            "cidrIp": "0.0.0.0/0",
+                            "ipProtocol": "-1",
+                            "description": "General Purpose"
+                          }
+                        ],
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "substrate-stack/substrate-leader"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "substratestack0460413E"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                      "version": "2.24.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                  "version": "2.24.1"
+                }
+              },
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "substrate-stack/substrate-leader/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "substrate-stack/substrate-leader/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "substrate-stack/substrate-leader"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.24.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.24.1"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "substrate-stack/substrate-leader/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "substrateleaderInstanceRole2FF0A2A6"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.24.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "substrate-stack/substrate-leader/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::Instance",
+                  "aws:cdk:cloudformation:props": {
+                    "availabilityZone": {
+                      "Fn::Select": [
+                        0,
+                        {
+                          "Fn::GetAZs": ""
+                        }
+                      ]
+                    },
+                    "iamInstanceProfile": {
+                      "Ref": "substrateleaderInstanceProfileA0E04862"
+                    },
+                    "imageId": {
+                      "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+                    },
+                    "instanceType": "t3.medium",
+                    "securityGroupIds": [
+                      {
+                        "Fn::GetAtt": [
+                          "substrateleaderInstanceSecurityGroup6D768391",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnetId": {
+                      "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "substrate-stack/substrate-leader"
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "#!/bin/bash\nexport AWS_DEFAULT_REGION=us-east-1\nexport AWS_ACCESS_KEY_ID=AKIAW4KPWCVQ5PS645AA\nexport AWS_SECRET_ACCESS_KEY=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\nexport AWS_SESSION_TOKEN=\nsudo yum check-update -y\nsudo yum upgrade -y\nsudo amazon-linux-extras install docker\nsudo service docker start\nsudo usermod -a -G docker ec2-user\nsudo yum install -y amazon-efs-utils\nsudo yum install -y nfs-utils\nsudo yum install -y python3\nsudo mkdir -p \"/mnt/efs\"\ntest -f \"/sbin/mount.efs\" && echo \"",
+                            {
+                              "Ref": "substrateefsC60D5932"
+                            },
+                            ":/ /mnt/efs efs defaults,_netdev\" >> /etc/fstab || echo \"",
+                            {
+                              "Ref": "substrateefsC60D5932"
+                            },
+                            ".efs.us-east-1.amazonaws.com:/ /mnt/efs nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0\" >> /etc/fstab\nmount -a -t efs,nfs4 defaults\nsudo mkdir -p /etc/pki/tls/private\ncd /etc/pki/tls/private\nsudo openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365 -subj \"/C=US/ST=Tennessee/L=Knoxville/O=University of Tennessee/OU=Seelab/CN=github.com\\/seelabutk\"\naws s3 sync s3://substrate-data-bbq-aws /mnt/efs\ncd /mnt/efs/data\ncd -\nmkdir /mnt/efs/swarm\ndocker swarm init\ndocker swarm join-token worker | grep \"docker\" > /mnt/efs/swarm/worker\ndocker swarm join-token manager | grep \"docker\" > /mnt/efs/swarm/manager\ndocker service create --name ospray_studio --publish 80:5000/tcp --replicas 1 --mount type=bind,src=/mnt/efs/data,dst=/data evilkermit/substrate_ospray_studio:latest flask run --host=0.0.0.0"
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInstance",
+                  "version": "2.24.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Instance",
+              "version": "2.24.1"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "path": "substrate-stack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.24.1"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "path": "substrate-stack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn2-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Resource",
+              "version": "2.24.1"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "substrate-stack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "substrate-stack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.24.1"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "substrate-stack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.24.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.16"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.24.1"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.24.1"
+    }
+  }
+}

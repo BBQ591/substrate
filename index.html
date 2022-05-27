@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<head>
+	<title>OSPRay Studio Final Project</title>
+	<meta charset="utf-8">
+
+	<script src="js/jsoneditor.min.js"></script>
+	<script src="js/raas.js"></script>
+
+	<link rel="stylesheet" href="css/jsoneditor.min.css"></link>
+	<link rel="stylesheet" href="css/styles.css"></link>
+</head>
+
+<body>
+	<img class="render"></img>
+	<div class="buttonContainer">
+		<button onclick="submit()" class="buttons">Render</button>
+		<button onclick="addFrame()" class="buttons">Add Image</button>
+		<button onclick="createMovie()" class="buttons">Finish him</button>
+	</div>
+
+	<div id="jsoneditor" class="editor" style="left: 0; margin-left: 0; width: 300px; height: 300px;"></div>
+	<script>
+		window.onload = function() {
+			main();
+		};
+	</script>
+</body>

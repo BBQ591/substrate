@@ -1,0 +1,11 @@
+data:
+  source:
+    - ./data/grass_bermuda_01_1k
+    - ./data/anthurium_botany_01_1k
+    - ./data/pachira_aquatica_01_1k
+
+aws:
+  bucket: substrate-data-bbq-aws
+  region: us-east-1
+  managers:
+    "t3.medium": 1

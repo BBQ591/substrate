@@ -1,0 +1,595 @@
+{
+ "Resources": {
+  "substratestack0460413E": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-stack"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/Resource"
+   }
+  },
+  "substratestackpublicSubnet1SubnetE97A5C5D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "substratestack0460413E"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/16",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-stack/publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/publicSubnet1/Subnet"
+   }
+  },
+  "substratestackpublicSubnet1RouteTable8E40CCF7": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "substratestack0460413E"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-stack/publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/publicSubnet1/RouteTable"
+   }
+  },
+  "substratestackpublicSubnet1RouteTableAssociationD198CA1E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "substratestackpublicSubnet1RouteTable8E40CCF7"
+    },
+    "SubnetId": {
+     "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/publicSubnet1/RouteTableAssociation"
+   }
+  },
+  "substratestackpublicSubnet1DefaultRoute3CB450F2": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "substratestackpublicSubnet1RouteTable8E40CCF7"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "substratestackIGWFE487FA3"
+    }
+   },
+   "DependsOn": [
+    "substratestackVPCGW276AFC6A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/publicSubnet1/DefaultRoute"
+   }
+  },
+  "substratestackIGWFE487FA3": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-stack"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/IGW"
+   }
+  },
+  "substratestackVPCGW276AFC6A": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "VpcId": {
+     "Ref": "substratestack0460413E"
+    },
+    "InternetGatewayId": {
+     "Ref": "substratestackIGWFE487FA3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-stack/VPCGW"
+   }
+  },
+  "substrateefssg69C36F35": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "substrate-stack/substrate-efs-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "from 0.0.0.0/0:2049",
+      "FromPort": 2049,
+      "IpProtocol": "tcp",
+      "ToPort": 2049
+     }
+    ],
+    "VpcId": {
+     "Ref": "substratestack0460413E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-efs-sg/Resource"
+   }
+  },
+  "substrateefsC60D5932": {
+   "Type": "AWS::EFS::FileSystem",
+   "Properties": {
+    "Encrypted": true,
+    "FileSystemTags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-efs"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-efs/Resource"
+   }
+  },
+  "substrateefsEfsMountTarget167F52C05": {
+   "Type": "AWS::EFS::MountTarget",
+   "Properties": {
+    "FileSystemId": {
+     "Ref": "substrateefsC60D5932"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "substrateefssg69C36F35",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-efs/EfsMountTarget1"
+   }
+  },
+  "substrateleaderInstanceSecurityGroup6D768391": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "substrate-stack/substrate-leader/InstanceSecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "General Purpose",
+      "IpProtocol": "-1"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-leader"
+     }
+    ],
+    "VpcId": {
+     "Ref": "substratestack0460413E"
+    }
+   },
+   "DependsOn": [
+    "substrateefsEfsMountTarget167F52C05"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-leader/InstanceSecurityGroup/Resource"
+   }
+  },
+  "substrateleaderInstanceRole2FF0A2A6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-leader"
+     }
+    ]
+   },
+   "DependsOn": [
+    "substrateefsEfsMountTarget167F52C05"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-leader/InstanceRole/Resource"
+   }
+  },
+  "substrateleaderInstanceProfileA0E04862": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "substrateleaderInstanceRole2FF0A2A6"
+     }
+    ]
+   },
+   "DependsOn": [
+    "substrateefsEfsMountTarget167F52C05"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-leader/InstanceProfile"
+   }
+  },
+  "substrateleader2516293E": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "substrateleaderInstanceProfileA0E04862"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t3.medium",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "substrateleaderInstanceSecurityGroup6D768391",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "substratestackpublicSubnet1SubnetE97A5C5D"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "substrate-stack/substrate-leader"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": {
+      "Fn::Join": [
+       "",
+       [
+        "#!/bin/bash\nexport AWS_DEFAULT_REGION=us-east-1\nexport AWS_ACCESS_KEY_ID=AKIAW4KPWCVQ5PS645AA\nexport AWS_SECRET_ACCESS_KEY=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\nexport AWS_SESSION_TOKEN=\nsudo yum check-update -y\nsudo yum upgrade -y\nsudo amazon-linux-extras install docker\nsudo service docker start\nsudo usermod -a -G docker ec2-user\nsudo yum install -y amazon-efs-utils\nsudo yum install -y nfs-utils\nsudo yum install -y python3\nsudo mkdir -p \"/mnt/efs\"\ntest -f \"/sbin/mount.efs\" && echo \"",
+        {
+         "Ref": "substrateefsC60D5932"
+        },
+        ":/ /mnt/efs efs defaults,_netdev\" >> /etc/fstab || echo \"",
+        {
+         "Ref": "substrateefsC60D5932"
+        },
+        ".efs.us-east-1.amazonaws.com:/ /mnt/efs nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0\" >> /etc/fstab\nmount -a -t efs,nfs4 defaults\nsudo mkdir -p /etc/pki/tls/private\ncd /etc/pki/tls/private\nsudo openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365 -subj \"/C=US/ST=Tennessee/L=Knoxville/O=University of Tennessee/OU=Seelab/CN=github.com\\/seelabutk\"\naws s3 sync s3://substrate-data-bbq-aws /mnt/efs\ncd /mnt/efs/data\ncd -\nmkdir /mnt/efs/swarm\ndocker swarm init\ndocker swarm join-token worker | grep \"docker\" > /mnt/efs/swarm/worker\ndocker swarm join-token manager | grep \"docker\" > /mnt/efs/swarm/manager\ndocker service create --name ospray_studio --publish 80:5000/tcp --replicas 1 --mount type=bind,src=/mnt/efs/data,dst=/data evilkermit/substrate_ospray_studio:latest flask run --host=0.0.0.0"
+       ]
+      ]
+     }
+    }
+   },
+   "DependsOn": [
+    "substrateefsEfsMountTarget167F52C05",
+    "substrateleaderInstanceRole2FF0A2A6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/substrate-leader/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WP3W7CMAyFn4X7NBsdL4AqDXExqWoRt5Mb3GFoEpQ4QlWVd19KyzqufPz559i5zDdyvYK7z9TpmnXUyKFmUFeR0PeAKpfD8aZE0ZpjWYgyNB2pOjQGeWSLqmxgPEDT4cIXtvXeKgIma/6aR7E3jC517oDxDv1sM2dbToecNRoWNargiPuds+H2MHgBe+MZjJpXTjoKbL0cPqnDuveMeiy+Zl82GD6A+0GOgkDLobLT/c/4XFY626bRGEWF3gY3WZXgQGP64DHyr1BYc6Lx2SjKns/WvH3I9bvcrC6eKHPJlTTKaoq/L0yCooMBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "substrate-stack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
